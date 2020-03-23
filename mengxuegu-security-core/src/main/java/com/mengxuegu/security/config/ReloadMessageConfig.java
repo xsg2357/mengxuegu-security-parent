@@ -16,6 +16,7 @@ public class ReloadMessageConfig {
                 ReloadableResourceBundleMessageSource();
         //.properties 不要加到后面
         messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
+//        messageSource.setBasename("classpath:messages_zh_CN"); //自己项目 maxSessionsPreventsLogin
         return messageSource;
     }
 }

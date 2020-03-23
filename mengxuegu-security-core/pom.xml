@@ -33,13 +33,13 @@
         </dependency>
 
 
-        <!--图形验证码
+        <!--图形验证码 -->
         <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
         </dependency>
-		-->
-        <!--数据库依赖
+
+        <!--数据库依赖  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -48,9 +48,9 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        -->
 
-        <!--采用redis来管理session
+
+        <!--采用redis来管理session   -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -59,15 +59,15 @@
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
-        -->
 
-        <!--解决找不到 javax.annotation.meta.When.MAYBE
+
+        <!--解决找不到 javax.annotation.meta.When.MAYBE	-->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>annotations</artifactId>
             <version>3.0.1</version>
         </dependency>
-		-->
+
     </dependencies>
 
 </project>

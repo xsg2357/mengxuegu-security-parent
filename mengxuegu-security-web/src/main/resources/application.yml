@@ -1,9 +1,27 @@
 server:
   port: 80
+  servlet:
+    session:
+      timeout: 1m  # session会话超时时间 5s 默认情况下是30min （M) 至少设置1分钟
+      cookie:
+        name: JSESSIONID # 统一指定浏览器中 Cookie 保存的SessionID名称
 
 spring:
   thymeleaf:
     cache: false # 关闭thymeleaf缓存
+    # 数据源配置
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://119.29.107.83:3307/study-security?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+    # mysql8版本以上驱动包指定新的驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  session:
+    store-type: redis # Redis 实现 Session 高可用集群：使用 redis 存储session 如果想关闭 redis 存储 session==>none
+  redis:
+    port: 6379
+    host: 119.29.107.83
+    password: xsg435268
 
 mengxuegu:
   security:
@@ -16,3 +34,8 @@ mengxuegu:
         - /dist/**
         - /modules/**
         - /plugins/**
+      loginType: REDIRECT # 认证之后 响应的类型：JSON/REDIRECT
+      imageCodeUrl: /code/image # 获取图形验证码 url
+      mobileCodeUrl: /code/mobile # 发送手机验证码 url
+      mobilePage: /mobile/page # 前往手机登录页面地址
+      tokenValiditySeconds: 604800 # 记住我有效时长，单位秒， 注意不要用乘法*，会被认为字符串
