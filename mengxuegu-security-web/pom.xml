@@ -50,14 +50,14 @@
         </dependency>
         -->
 
-        <!--bootstrap-table
+        <!--bootstrap-table 20200324 -->
         <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>bootstrap-table</artifactId>
             <version>1.14.1</version>
         </dependency>
-        -->
-        <!--jquery-treeGrid
+
+        <!--jquery-treeGrid 20200324-->
         <dependency>
             <groupId>org.webjars.bower</groupId>
             <artifactId>jquery-treegrid</artifactId>
@@ -69,14 +69,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        -->
-        <!--layer
+
+        <!--layer  20200324-->
         <dependency>
             <groupId>org.webjars.bowergithub.sentsin</groupId>
             <artifactId>layer</artifactId>
             <version>3.1.1</version>
         </dependency>
-        -->
+
 
         <!-- application.yml 配置处理器-->
         <dependency>
