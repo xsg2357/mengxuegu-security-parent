@@ -38,8 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 //        return new User(username, password,
 //                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
         // th:if="${#authorization.expression('hasAuthority(''sys:user:add'')')}" 没权限不显示视图 authorization.expression
-//        String authorityString = "sys:user,sys:role,sys:user:add";
-        String authorityString = "sys:user,sys:role";
+        String authorityString = "sys:user,sys:role,sys:user:add,sys:role:add";
+//        String authorityString = "sys:user,sys:role";
         return new User(username, password,
                 AuthorityUtils.commaSeparatedStringToAuthorityList(authorityString));
     }

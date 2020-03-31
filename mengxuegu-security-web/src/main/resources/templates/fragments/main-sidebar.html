@@ -17,8 +17,10 @@
                 <img th:src="@{/dist/img/user2-160x160.jpg}" src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
+                <!--#authentication.principal<==>sec:authentication -->
                 <!--<a th:text = "#{username}" href="#" class="d-block">梦老师</a>-->
-                <a th:text="${#authentication.principal.username}" href="#" class="d-block">梦老师</a>
+                <!--<a th:text="${#authentication.principal.username}" href="#" class="d-block">梦老师</a>-->
+                <a sec:authentication="principal.username" href="#" class="d-block">梦老师</a>
             </div>
         </div>
 
