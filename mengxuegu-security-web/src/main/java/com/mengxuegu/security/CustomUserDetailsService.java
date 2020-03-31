@@ -33,7 +33,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         // 2.查询用户拥有权限
         // 3.封装用户信息: username用户名,password数据库中的密码,authorities资源权限标识符
         // SpringSecurity 底层会校验是否身份合法。
+//        return new User(username, password,
+//                AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
+//        return new User(username, password,
+//                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
+        // th:if="${#authorization.expression('hasAuthority(''sys:user:add'')')}" 没权限不显示视图 authorization.expression
+//        String authorityString = "sys:user,sys:role,sys:user:add";
+        String authorityString = "sys:user,sys:role";
         return new User(username, password,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList(authorityString));
     }
 }

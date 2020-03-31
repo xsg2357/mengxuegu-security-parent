@@ -3,13 +3,16 @@ package com.mengxuegu.security.config;
 import com.mengxuegu.security.authentication.code.ImageCodeValidateFilter;
 import com.mengxuegu.security.authentication.mobile.MobileAuthenticationConfig;
 import com.mengxuegu.security.authentication.mobile.MobileValidateFilter;
+import com.mengxuegu.security.authorize.CustomAuthorizeConfigurationManager;
 import com.mengxuegu.security.properties.SecurityProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,6 +33,7 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 import javax.sql.DataSource;
 
 @EnableWebSecurity //启动 SpringSecurity 过滤器链功能
+@EnableGlobalMethodSecurity(prePostEnabled = true) //开启注解方法级权限控制 例如：@PreAuthorize(表达式)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -122,6 +126,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
+     * 管理了所有关于权限的配置
+     */
+    @Autowired
+    private CustomAuthorizeConfigurationManager customAuthorizeConfigurationManager;
+
+
+    /**
      * 资源权限配置（过滤器链）:
      * 1、被拦截的资源
      * 2、资源所对应的角色权限
@@ -146,18 +157,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter(sProperties.getAuthentication().getPasswordParameter()) // 默认密码的属性名是 password
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
-                .and()
-                .authorizeRequests() // 认证请求
-                .antMatchers(sProperties.getAuthentication().getLoginPage(),
-//                        "/code/image","/mobile/page","/code/mobile"
-                        sProperties.getAuthentication().getImageCodeUrl(),
-                        sProperties.getAuthentication().getMobileCodeUrl(),
-                        sProperties.getAuthentication().getMobilePage()
-
-                ).permitAll() //localhost 将您重定向的次数过多。对所有人放行
-                .anyRequest().authenticated() // 所有进入应用的HTTP请求都要进行认证
 //                .and().csrf().disable() // 输入有效用户信息，还是回到登录页，则要禁用 CSRF 攻击。
                 // CSRF（Cross-site request forgery） 跨站请求伪造 关闭 CSRF 攻击
+                // 认证一块的代码已优化到AuthorizeConfigurerProvider 接口下的实现中
                 .and()
                 .rememberMe() //记住我
                 .tokenRepository(jdbcTokenRepository()) // 保存登录信息
@@ -181,6 +183,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.apply(mobileAuthenticationConfig);
         // 跨站请求伪造 关闭 CSRF 攻击
         http.csrf().disable();
+        //权限相关配置管理者, 将所有授权配置管理起来了
+        customAuthorizeConfigurationManager.configure(http.authorizeRequests());
     }
 
     //注入session失败策略
