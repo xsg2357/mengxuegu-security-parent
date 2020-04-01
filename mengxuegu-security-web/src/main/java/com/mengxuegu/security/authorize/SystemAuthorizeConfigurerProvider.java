@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 public class SystemAuthorizeConfigurerProvider implements AuthorizeConfigurerProvider {
 
 
+    // 和Controller请求里面的配置相冲突 取消掉 用注解的方式设置比较好
     @Override
     public void configure(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-        config.antMatchers("/user").hasAuthority("sys:user")
-                .antMatchers(HttpMethod.GET, "/role").hasAuthority("sys:role")
-                .antMatchers(HttpMethod.GET, "/permission")
-                //角色会加上前缀 ROLE_，即真实是 ROLE_ADMIN
-                .access("hasAuthority('sys:permission') or hasAnyRole('ADMIN')");
+//        config.antMatchers("/user").hasAuthority("sys:user")
+//                .antMatchers(HttpMethod.GET, "/role").hasAuthority("sys:role")
+//                .antMatchers(HttpMethod.GET, "/permission")
+//                //角色会加上前缀 ROLE_，即真实是 ROLE_ADMIN
+//                .access("hasAuthority('sys:permission') or hasAnyRole('ADMIN')");
 
     }
 }

@@ -46,13 +46,13 @@
           <!-- 工具栏 -->
           <div class="card-tools">
             <button type="button" class="btn btn-primary btn-xs" th:onclick="location.href=[[@{/permission/form}]]" data-toggle="tooltip" title="新增">
-              <i class="fa fa-plus"></i>&nbsp;新增
+              <i class="fa fa-plus"/>&nbsp;新增
             </button>
           </div>
           <!-- /工具栏 -->
         </div>
         <div class="card-body">
-          <table id="table" class="table table-bordered"></table>
+          <table id="table" class="table table-bordered"/>
         </div>
       </div>
       <!--/.box-body-->
@@ -77,6 +77,33 @@
 <th:block th:replace="fragments/script :: public-js"/>
 <th:block th:replace="fragments/script :: bootstrap-table-js"/>
 <th:block th:replace="fragments/script :: layer-js"/>
-
+<!--公共的js-->
+<script th:src="@{/modules/js/common.js}"></script>
+<!--权限资源列表js-->
+<script th:src="@{/modules/js/permission/permission-list.js}"></script>
+<script th:inline="javascript">
+  // 标签内不要少了 th:inline="javascript" 不然无法使用thymeleaf表达式
+  // 渲染操作列，common.js会调用该方法, operationHtml是数组存在操作列的html, row获取当前行数据
+  function getOperationHtml(operationHtml, row) {
+    // 判断是否权限
+    if(/*[[${#authorization.expression('hasAuthority("sys:permission:edit")')}]]*/) {
+      operationHtml.push('<li><a class="dropdown-item btn btn-primary"' +
+              'href="'+contextPath+'permission/form/'+ row.id+'" >' +
+              '<i class="fa fa-edit"/>&nbsp;修改</a></li>')
+    }
+    if(/*[[${#authorization.expression('hasAuthority("sys:permission:delete")')}]]*/) {
+      operationHtml.push('<li><a class="dropdown-item" onclick="$.delete(\''+ contextPath +'permission/'+
+              row.id +'\')" href="#" ><i class="fa fa-trash"/>&nbsp;删除</a></li>')
+    }
+  }
+  // 如何 增删 都没有权限，则隐藏整个操作列， common.js会调用该方法
+  function showOperation() {
+    if(/*[[ ${#authorization.expression('hasAuthority("sys:permission:edit")')}or
+      ${#authorization.expression('hasAuthority("sys:permission:delete")')}]]*/) {
+      // 只要有1个权限, 就显示 `操作` 列
+      $table.bootstrapTable('showColumn', 'action')
+    }
+  }
+</script>
 </body>
 </html>

@@ -47,6 +47,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         if (LoginResponseType.JSON.equals(
                 securityProperties.getAuthentication().getLoginType())) {
 
+            authentication.getDetails();
+
             // 当认证成功后，响应 JSON 数据给前端
             MengxueguResult result = MengxueguResult.ok("认证成功");
             response.setContentType("application/json;charset=UTF-8");

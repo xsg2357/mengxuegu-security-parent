@@ -89,9 +89,12 @@ $(function() {
             operationHtml.push(
                 '<div class="btn-group">' +
                 '   <button type="button" class="btn btn-primary dropdown-toggle dropdown-hover dropdown-icon btn-xs" data-toggle="dropdown" >' +
-                '    <i class="fa fa-cog"></i>' +
+                '    <i class="fa fa-cog"/>' +
                 '   </button>' +
                 '<ul class="dropdown-menu dropdown-menu-right" role="menu">');
+
+   /*         operationHtml.push('<li><a class="dropdown-item btn btn-primary">修改</a></li>');
+            operationHtml.push('<li><a class="dropdown-item btn btn-primary">删除</a></li>');*/
 
             getOperationHtml(operationHtml, row);
 
@@ -125,7 +128,7 @@ $(function() {
                 dataType: dataType,
                 success: function (result) {
                     console.log(result);
-                    if(result.code == 200) {
+                    if(result.code === 200) {
                         layer.msg('操作成功', {icon: 1, time: 1000, shift: 5});
                         $table.bootstrapTable('refresh')
                     }else {
