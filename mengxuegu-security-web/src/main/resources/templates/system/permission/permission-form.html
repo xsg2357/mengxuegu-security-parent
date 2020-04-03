@@ -69,17 +69,17 @@
                   <h3 class="card-title">基本信息</h3>
                 </div>
                 <!-- /.card-header -->
-                <form id="form" th:action="@{/permission}" th:method="post" >
-                  <input name="_method" value="put" type="hidden" >
-                  <input id="id" name="id" type="hidden" >
+                <form id="form" th:action="@{/permission}" th:method="post" th:object="${permission}" >
+                  <input th:if="*{id!=null}" name="_method" value="put" type="hidden" >
+                  <input id="id" th:value="*{id}" name="id" type="hidden" >
                   <div class="card-body ml-4">
                     <div class="row ">
                       <div class="col-sm-6">
                         <div class="form-group row">
                           <label class="col-sm-3  col-form-label"><span style="color: red;">*</span>上级资源：</label>
                           <div>
-                            <input id="parentId" name="parentId" type="hidden">
-                            <input id="parentName" name="parentName" type="text" placeholder="请在右侧选择上级" class="form-control" readonly  >
+                            <input id="parentId" th:value="*{parentId}" name="parentId" type="hidden">
+                            <input id="parentName"  th:value="*{parentName}" name="parentName" type="text" placeholder="请在右侧选择上级" class="form-control" readonly  >
                           </div>
                         </div>
                       </div>
@@ -87,7 +87,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3  col-form-label"><span style="color: red;">*</span>资源名称：</label>
                           <div>
-                            <input name="name" type="text"  maxlength="40" class="form-control" placeholder="请输入资源名称" required>
+                            <input th:value="*{name}" name="name" type="text"  maxlength="40" class="form-control" placeholder="请输入资源名称" required>
                           </div>
                         </div>
                       </div>
@@ -98,7 +98,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">权限标识：</label>
                           <div>
-                            <input  type="text" name="code" maxlength="40" class="form-control" placeholder="请输入权限标识" >
+                            <input  th:value="*{code}" type="text" name="code" maxlength="40" class="form-control" placeholder="请输入权限标识" >
                           </div>
                         </div>
                       </div>
@@ -107,7 +107,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">请求地址：</label>
                           <div>
-                            <input  type="text" name="url" maxlength="40" class="form-control" placeholder="请输入请求地址" >
+                            <input  th:value="*{url}" type="text" name="url" maxlength="40" class="form-control" placeholder="请输入请求地址" >
                           </div>
                         </div>
                       </div>
@@ -119,11 +119,11 @@
                           <label class="col-sm-3 col-form-label">资源类型：</label>
                           <div class="col-sm-9 form-inline">
                             <div class="form-check">
-                              <input value="1"  name="type" type="radio" class="form-check-input " id="type1" checked>
+                              <input  th:field="*{type}" value="1"  name="type" type="radio" class="form-check-input " id="type1" checked>
                               <label class="form-check-label ">菜单&nbsp;</label>
                             </div>
                             <div class="form-check">
-                              <input value="2" name="type" type="radio" class="form-check-input " id="type2" checked>
+                              <input  th:field="*{type}" value="2" name="type" type="radio" class="form-check-input " id="type2" checked>
                               <label class="form-check-label ">按钮&nbsp;</label>
                             </div>
                           </div>
@@ -133,7 +133,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">资源图标：</label>
                           <div>
-                            <input type="text" name="icon" maxlength="40" class="form-control" placeholder="请输入资源图标" >
+                            <input th:value="*{icon}" type="text" name="icon" maxlength="40" class="form-control" placeholder="请输入资源图标" >
                           </div>
                         </div>
                       </div>

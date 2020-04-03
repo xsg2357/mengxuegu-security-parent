@@ -18,4 +18,14 @@
         ON p.id = rp.permission_id
         WHERE u.id = #{userId}
         </select>
+
+    <select id="findByRoleId" resultType="SysPermission">
+       SELECT DISTINCT p.*
+       FROM sys_permission p
+        JOIN sys_role_permission rp ON p.id = rp.permission_id
+        JOIN sys_role sr ON sr.id = rp.role_id
+       WHERE rp.role_id = #{roleId}
+       ORDER BY p.id
+    </select>
+
 </mapper>

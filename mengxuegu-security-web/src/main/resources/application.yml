@@ -31,6 +31,10 @@ spring:
     port: 6379
     host: 119.29.107.83
     password: xsg435268
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true # 开启对PUT DELETE 方法的支持
 
 mybatis-plus:
   # 指定实体类所有包
