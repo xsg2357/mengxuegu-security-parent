@@ -43,7 +43,7 @@ public class SysUserController {
 
 
     /**
-     * 跳转到新增或者修改页面
+     * 跳转到新增或者修改页面 测试时使用
      */
     // 有'sys:user:add' 或 'sys:user:edit'权限的可以访问
     @PreAuthorize("hasAnyAuthority('sys:user:add','sys:user:edit')")
