@@ -1,5 +1,6 @@
 package com.mengxuegu.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mengxuegu.base.result.MengxueguResult;
 import com.mengxuegu.web.entities.SysRole;
@@ -78,6 +79,7 @@ public class SysUserController {
     @PostMapping("/page") // 不要少了 /
     @ResponseBody // 不要少了
     public MengxueguResult page(Page<SysUser> page, SysUser user) {
+        System.out.println(JSON.toJSONString(sysUserService.selectPage(page, user).getRecords()));
         return MengxueguResult.ok(sysUserService.selectPage(page, user));
     }
 
