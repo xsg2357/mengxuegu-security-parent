@@ -53,18 +53,18 @@ public class SysUserController {
     }
 
     /**
-     * 删除用户
+     * 删除用户 测试使用
      */
     // 返回值的code等于200，则调用成功，不然抛出403不允许访问
-    @PostAuthorize("returnObject.code == 200")
-    @RequestMapping("/{id}")
-    @ResponseBody
-    public MengxueguResult deleteById(@PathVariable Long id) {
-        if (id < 0) {
-            return MengxueguResult.build(500, "参数不能小于0");
-        }
-        return MengxueguResult.ok();
-    }
+//    @PostAuthorize("returnObject.code == 200")
+//    @RequestMapping("/{id1}")
+//    @ResponseBody
+//    public MengxueguResult deleteById1(@PathVariable Long id1) {
+//        if (id1 < 0) {
+//            return MengxueguResult.build(500, "参数不能小于0");
+//        }
+//        return MengxueguResult.ok();
+//    }
 
 
     /**
@@ -107,8 +107,6 @@ public class SysUserController {
 
     /**
      * 跳转新增 或 修改页面
-     *
-     * @return
      */
     @PreAuthorize("hasAnyAuthority('sys:user:add','sys:user:edit')")
     @GetMapping(value = {"/form", "/form/{id}"})
@@ -121,5 +119,29 @@ public class SysUserController {
         model.addAttribute("user", user);
         return HTML_PREFIX + "user-form";
     }
+
+    /**
+     * 提交新增（POST）或更新（PUT）数据
+     */
+    @PostAuthorize("hasAuthority('sys:user:add') or hasAuthority('sys:user:edit')")
+    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT}, value = "")
+    public String saveOrUpdate(SysUser sysUser) {
+        sysUserService.saveOrUpdate(sysUser);
+        return "redirect:/user";
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id 用户id
+     */
+    @PostAuthorize("hasAuthority('sys:user:delete')")
+    @RequestMapping("/{id}")
+    @ResponseBody
+    public MengxueguResult deleteById(@PathVariable Long id) {
+        sysUserService.deleteById(id);
+        return MengxueguResult.ok();
+    }
+
 
 }

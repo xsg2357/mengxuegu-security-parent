@@ -9,9 +9,12 @@ import com.mengxuegu.web.entities.SysUser;
 import com.mengxuegu.web.mapper.SysRoleMapper;
 import com.mengxuegu.web.mapper.SysUserMapper;
 import com.mengxuegu.web.service.SysUserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +24,11 @@ import java.util.List;
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+
+    /**
+     * 默认密码 1234
+     */
+    private static final String PASSOWRD_DEFAULT = "$2a$10$rDkPvvAFV8kqwvKJzwlRv.i.q.wz1w1pz0SFsHn/55jNeZFQv/eCm";
 
     @Autowired
     SysRoleMapper sysRoleMapper;
@@ -57,5 +65,39 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<SysRole> roleList = sysRoleMapper.findByUserId(id);
         sysUser.setRoleList(roleList);
         return sysUser;
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        // 查询出用户信息
+        SysUser sysUser = baseMapper.selectById(id);
+        sysUser.setUpdateDate(new Date());
+        // 是否可用设置为false表示删除
+        sysUser.setEnabled(false);
+        baseMapper.updateById(sysUser);
+        return true;
+    }
+
+    @Transactional // 进行事务管理
+    @Override
+    public boolean saveOrUpdate(SysUser sysUser) {
+        if (sysUser.getId() == null) {
+            //新增 设置默认密码 1234
+            sysUser.setPassword(PASSOWRD_DEFAULT);
+        }
+        // 更新时间
+        sysUser.setUpdateDate(new Date());
+        //新增或更新用户数据
+        boolean flag = super.saveOrUpdate(sysUser);
+        // 有数据操作，更新用户角色关系
+        if (flag) {
+            // 将用户角色关系表中对应数据删除
+            baseMapper.deleteUserRoleByUserId(sysUser.getId());
+            // 不为空则保存用户角色关系数据
+            if (CollectionUtils.isNotEmpty(sysUser.getRoleIds())) {
+                baseMapper.saveUserRole(sysUser.getId(), sysUser.getRoleIds());
+            }
+        }
+        return flag;
     }
 }

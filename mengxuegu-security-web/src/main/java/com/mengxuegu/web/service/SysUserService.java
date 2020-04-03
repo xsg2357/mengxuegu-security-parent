@@ -13,10 +13,10 @@ import org.apache.ibatis.annotations.Param;
 public interface SysUserService extends IService<SysUser> {
 
     /**
-     *   * 通过用户名查询
-     *   * @param username 用户名
-     *   * @return 用户信息
-     *   
+     * * 通过用户名查询
+     * * @param username 用户名
+     * * @return 用户信息
+     * 
      */
     SysUser findByUsername(String username);
 
@@ -30,4 +30,10 @@ public interface SysUserService extends IService<SysUser> {
 
     SysUser findById(Long id);
 
+    /**
+     * 通过id假删除用户数据，把 is_enabled = 0
+     */
+    boolean deleteById(Long id);
+    
+    
 }
