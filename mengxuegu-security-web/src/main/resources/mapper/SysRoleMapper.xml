@@ -30,5 +30,17 @@
         <foreach collection="perIds" item="item"  index="index" separator=",">(#{roleId},#{item})</foreach>
     </insert>
 
+    <!--根据用户ID查询拥有角色-->
+    <select id="findByUserId" resultType="SysRole">
+        SELECT
+        r.*
+        FROM
+        sys_role r
+        JOIN sys_user_role ur ON r.id = ur.role_id
+        JOIN sys_user u ON ur.user_id = u.id
+        WHERE
+        u.id = #{userId}
+      </select>
+
 
 </mapper>

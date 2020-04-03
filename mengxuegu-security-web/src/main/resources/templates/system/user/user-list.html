@@ -106,6 +106,34 @@
 <th:block th:replace="fragments/script :: public-js"/>
 <th:block th:replace="fragments/script :: bootstrap-table-js"/>
 <th:block th:replace="fragments/script :: layer-js"/>
+<!--公共的js-->
+<script th:src="@{/modules/js/common.js}"></script>
+<!--权限资源列表js-->
+<script th:src="@{/modules/js/user/user-list.js}"></script>
+<script th:inline="javascript">
 
+  // 渲染操作列，common.js调用该方法, operationHtml是数组存操作列的html, row 可获取当前行数据
+  function getOperationHtml(operationHtml, row) {
+    // 判断是否权限
+    if(/*[[${#authorization.expression('hasAuthority("sys:user:edit")')}]]*/) {
+      operationHtml.push('<li><a class="dropdown-item btn btn-primary" href="'+contextPath+'user/form/'+
+              row.id+'" ><i class="fa fa-edit"></i>&nbsp;修改</a></li>')
+    }
+    if(/*[[${#authorization.expression('hasAuthority("sys:user:delete")')}]]*/) {
+      operationHtml.push('<li><a class="dropdown-item" onclick="$.delete(\''+ contextPath +'user/'+ row.id
+              +'\')" href="#" ><i class="fa fa-trash"></i>&nbsp;删除</a></li>')
+    }
+  }
+
+  // 权限判断是否显示操作列 如何 增删 都没有权限，则隐藏整个操作列， common.js会调用该方法
+  function showOperation() {
+
+    if(/*[[${#authorization.expression('hasAuthority("sys:user:edit")')} or ${#authorization.expression('hasAuthority("sys:user:delete")')}]]*/) {
+    // 只要有1个权限, 就显示 `操作` 列
+      $table.bootstrapTable('showColumn', 'action')
+    }
+
+  }
+</script>
 </body>
 </html>
