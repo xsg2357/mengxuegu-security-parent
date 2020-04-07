@@ -37,6 +37,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 //
 //    }
 
+    @Autowired(required = false) // false不是一定要实现，有则注入，没有不注入
+    AuthenticationSuccessListener authenticationSuccessListener;
+
     /**
      * 认证成功后处理逻辑
      *
@@ -44,6 +47,12 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
+        // 认证成功后，加载当前用户所拥有的权限资源
+        if (authenticationSuccessListener != null) {
+            authenticationSuccessListener.successListener(request, response, authentication);
+        }
+
         if (LoginResponseType.JSON.equals(
                 securityProperties.getAuthentication().getLoginType())) {
 
