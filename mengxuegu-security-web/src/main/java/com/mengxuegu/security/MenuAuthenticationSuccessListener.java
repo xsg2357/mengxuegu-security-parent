@@ -15,6 +15,14 @@ import java.util.List;
 
 /**
  * 认证成功后触发此类
+ * 1.认证成功后触发此类CustomAuthenticationSuccessHandler
+ * 2.定义一个监听器AuthenticationSuccessListener及其监听器方法successListener
+ * 3.创建一个MenuAuthenticationSuccessListener继承AuthenticationSuccessListener来获取用户权限
+ * 4.在 com.mengxuegu.security.AbstractUserDetailsService#findSysPermission 查询用户信息时已经将用户
+ * 权限信息存放到了 com.mengxuegu.web.entities.SysUser#permissions 中，最终认证通过后会将 SysUser
+ * 对象放到Authentication的 principal 属性中 。
+ * 5. 在 MenuAuthenticationSuccessListener  的实现方法中从Authentication 中获取到 principal ，它其实就是
+ * sysUser 对象 ,意味着就可以获取 permissions权限集合，来进行处理渲染左侧菜单。
  */
 @Component
 public class MenuAuthenticationSuccessListener implements AuthenticationSuccessListener {
